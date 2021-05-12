@@ -1,13 +1,13 @@
 <template>
   <div class="composition">
-    <h1>This is an Reactive Composition API page</h1>
+    <h1>This is an <strong>Reactive Data</strong> in Composition API page</h1>
     <h1>You Have {{todosCount}} todos</h1>
     <div>
-      <input v-model="newTodoName" @keyup.enter="addtodo" placeholder="Add a Todo" type="text">
+      <input v-model="data.newTodoName" @keyup.enter="addtodo" placeholder="Add a Todo" type="text">
     </div>
     <div>
       <ul>
-        <li v-for="(todo, index) in todos" :key="todo.id">
+        <li v-for="(todo, index) in data.todos" :key="todo.id">
           <span>{{todo.name}}</span>
           <button @click="deleteTodo(index)">X</button>
         </li>
@@ -18,43 +18,47 @@
 
 <script>
 // @ is an alias to /src
-import { computed, ref, watch} from 'vue'
+import { computed, reactive, watch} from 'vue'
 
 export default {
   name: 'Options',
   setup() {
-    let newTodoName = ref('')
-    let todos = ref([])
+    
+    let data = reactive({
+      newTodoName: '',
+      todos: []
+    });
+
     const swearwords = ['fart', 'butt hair', 'willy']
 
     let todosCount = computed(() => {
-      return todos.value.length
+      return data.todos.length
     })
 
     function addtodo() {
       // console.log('adfadsf')
       let newTodo = {
         id: Date.now(),
-        name: newTodoName.value
+        name: data.newTodoName
       }
-      todos.value.push(newTodo)
-      newTodoName.value = ''
+      data.todos.push(newTodo)
+      data.newTodoName = ''
     }
 
     function deleteTodo(index) {
-      todos.value.splice(index, 1)
+      data.todos.splice(index, 1)
     }
 
-    watch(newTodoName, (newValue) => {
-        console.log('newValue: ', newValue)
-        if(swearwords.includes(newValue.toLowerCase())) {
-          newTodoName.value = ''
-          alert(' You must NEVER say ' + newValue + '!!')
+    watch(data, (newValue) => {
+        console.log('newValue: ', newValue.newTodoName)
+        if(swearwords.includes(newValue.newTodoName.toLowerCase())) {
+          alert(' You must NEVER say ' + newValue.newTodoName + '!!')
+          data.newTodoName = ''
         }
       })
     
     return {
-      newTodoName, todos, todosCount, addtodo, deleteTodo
+      data, todosCount, addtodo, deleteTodo
     }
 
   }
