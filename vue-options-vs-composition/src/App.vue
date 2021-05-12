@@ -1,7 +1,8 @@
 <template>
   <div id="nav">
     <router-link to="/">Options API</router-link> |
-    <router-link to="/composition">Composition API</router-link>
+    <router-link to="/composition">Composition API</router-link> |
+    <router-link to="/r-Composition"> Reactive data </router-link>
   </div>
   <router-view/>
 </template>
